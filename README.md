@@ -9,11 +9,11 @@ To summarize the intents of the project, this is what each program does:
 
 **REQUIREMENTS:**
  - **Python 3.x**
- - Python libraries (built-in ones excluded): **sklearn**, **nltk** (with the packages "stopwords" and "punkt"), **vadersentiment**, **pandas**, **matplotlib**, **readline** (Linux users only)
- - Novels in **.txt format** and proper encoding of escape characters: make sure **\n** is found **at the end of each paragraph** and not at the end of each line (the programs will work anyway but the results, especially the output of traits.py, will be inaccurate).
+ - Python libraries (built-in ones excluded): **sklearn**, **nltk** (with the packages "stopwords" and "punkt"), **vadersentiment**, **pandas**, **matplotlib**, **readline** (optional, Linux users only)
+ - Novels in **.txt format** and proper encoding of escape characters: make sure **\n** is found **at the end of each paragraph** and not at the end of each line (the programs will work anyway but the results, especially the output of traits.py, will be inaccurate). A couple of examples are uploaded here.
 
 **INSTALLATION GUIDE:**
  - Run the usual "pip install library-name" in command-line to install the required libraries;
  - To install the required nltk packages, run in the Python IDE the command "nltk.download("package-name")" for both of them. An error output by nltk should tell you how to do that anyway.
  - Download the scripts and place them all in the same directory. The novels to be analyzed as well must be placed in the same directory of the scripts.
- - Run them as normal Python scripts.
+ - Run them as normal Python scripts, they will guide you at each step on what to insert and how.
