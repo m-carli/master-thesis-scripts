@@ -38,35 +38,19 @@ l'emotional arc del romanzo (ottenuto mediante sentiment analysis) con la
 distribuzione dei personaggi nel romanzo (rilevata attraverso il loro nome proprio) e
 con le porzioni del romanzo dove avviene l'interazione tra coppie di personaggi, a cui
 vengono assegnate le parole chiave che caratterizzano l'interazione corrispondente.
-A differenza del programma networktfidf.py, questo programma vuole fornire una
-visualizzazione diacronica delle interazioni tra personaggi: riprendendo la nozione
-greimasiana di isotopia, le teorie strutturaliste sul nome proprio (Barthes) e sulla
-integrazione tra ruoli dei personaggi e sequenze narrative (Bremond, Propp), si vuole
-osservare come la distribuzione di un determinato nome proprio influenza l'andamento 
-dell'emotional arc, e quali interazioni apportano le variazioni più rilevanti. 
-Si vuole inoltre vedere se le parole chiave in tal modo estratte aiutano a caratterizzare 
-la funzione narrativa dei personaggi coinvolti (aprendo alla caratterizzazione dei
-personaggi in termini attanziali e greimasiani).
 '''
 
 analyzer = SentimentIntensityAnalyzer()
 cls()
 print("Loaded 100%: Ready.")
 
-'''
-Qui prema tre volte invio se il testo considerato è Siddhartha; ho messo i valori
-hardcoded per accelerarle il processo.
-'''
 book = input('Insert source book [.txt format, without extension]: ')
-#book = 'Siddhartha1'
 BOOK = f'{book}.txt'
 window_value = input('Insert window width: ')
-#window_value = 160
 WITH_TFIDF = False
 tfidf_choice = input('Use tfidf? (y/n) ')
 if tfidf_choice == 'y': WITH_TFIDF = True
 choice = input('Go directly to graph? y/n ')
-#choice = 'n'
 
 CUSTOM_STOPWORDS = CharModelTools.custom_stopwords
 
@@ -103,10 +87,10 @@ def add_char_distribution(book):
     y = []
     x = []
 
-    with open(f'{book}.txt','r',encoding='utf-8') as f: #with open(f'Novels/{book}.txt','r',encoding='utf-8') as f:
+    with open(f'{book}.txt','r',encoding='utf-8') as f:
         total = f.read()
         #sentences = f.read().split('.')
-        sentences = re.split('\n|\.', total) #anche qui NUOVO METODO SPLIT
+        sentences = re.split('\n|\.', total)
         sentences = [sentence for sentence in sentences if sentence]
         if len(char_array) <= 3:
             nchar = -0.1
@@ -124,9 +108,6 @@ def add_char_distribution(book):
                 if name in sentence: #sentence.count(name) == 1:
                     tempx.append(index)
                     tempy.append(nchar)
-
-                '''elif sentence.count(name) == 0:
-                    pass'''
             
                 index += 1
 
@@ -154,7 +135,6 @@ def pre_process(text, char1, char2):
     text = text.lower()
     text = re.sub(char1.lower(),'', text)
     text = re.sub(char2.lower(),'', text)
-    #text = re.sub(r'\W*\b\w{1,3}\b','',text) #regola anche qua momentaneamente sospesa
     for word in CUSTOM_STOPWORDS: text = re.sub(word,'', text)
 
     return text
@@ -261,7 +241,6 @@ def create_graph(file, win):
         del numbers[-1]
         for num in numbers:
             pyplot.axvline(x=int(num), color="black", linewidth=0.5, linestyle="--")
-            #pyplot.text(int(num),0,f"Ch. {nchap}")
             nchap += 1
 
         file.close()
@@ -276,7 +255,6 @@ def create_graph(file, win):
     '''
     keyerrors = 0
     for start in interactions:
-        #if start < 1000: #numero frase, non numero interazione
         chars_in_this_interaction = dict_interactions[start].split(':')
         try:
             position_char1 = char_positions[chars_in_this_interaction[0]]
@@ -297,13 +275,10 @@ def create_graph(file, win):
             Vengono utilizzati il numero della frase di inizio e quello della fine
             dell'interazione per isolare la porzione di testo dell'interazione dal testo
             completo (il quale viene ripreso come un array di frasi numerate), e
-            poi viene svolta una procedura di TF-IDF analoga a quella spiegata nel
-            programma networktfidf.py.
+            poi viene svolta una procedura di TF-IDF.
             '''
-            #comment out riga keywords e pyplot.text
             if WITH_TFIDF:
                 keywords = main_tfidf(int(start), int(interactions[start]), chars_in_this_interaction[0], chars_in_this_interaction[1])
-                #average_position = (position_char2+position_char1)/2
                 pyplot.text(int(start), better_text_position, keywords, fontsize=6)
 
         except KeyError:
@@ -331,7 +306,6 @@ if choice == 'n':
     try: os.mkdir(f'Novels data/Catalogues {book}')
     except: pass
     
-    #parameter = input('Insert compound threshold for registration: ')
     parameter = 0.8 #HARDCODED PARAMETER
     polarities = []
     positive_sent = {}
@@ -353,7 +327,7 @@ if choice == 'n':
             start_dialogue = 0
             ninteractons = 0
             total = f.read() #.split('.')
-            total = re.split('\n|\.', total) #nuova soluzione di separazione, SORVEGLIARE
+            total = re.split('\n|\.', total)
             total = [e for e in total if e]
             print(f'TOTAL WITH NEW DIVIDING METHOD: {len(total)}')
             for sentence in total: #f.read().split()
